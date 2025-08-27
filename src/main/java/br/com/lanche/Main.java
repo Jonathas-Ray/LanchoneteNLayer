@@ -1,28 +1,29 @@
 package br.com.lanche;
 
-import br.com.lanche.applications.LancheApplication;
 import br.com.lanche.facades.LancheFacade;
+import br.com.lanche.applications.LancheApplication;
 import br.com.lanche.interfaces.LancheRepository;
-import br.com.lanche.models.Lanche;
-import br.com.lanche.repositories.LancheRepositoryFirebase;
+import br.com.lanche.interfaces.LancheService;
 import br.com.lanche.repositories.LancheRepositoryImpl;
-import br.com.lanche.services.LancheService;
+import br.com.lanche.services.LancheServiceImpl;
+import br.com.lanche.models.Lanche; // MAIN -> INTERFACE? -> FACADE -> APPLICATION -> SERVICE -> REPOSITORY -> MODELS
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
+
 public class Main {
     private static LancheRepository lancheRepositoryImpl;
-    private static LancheService lancheService;
+    private static LancheService lancheServiceImpl;
     private static LancheApplication lancheApplication;
     private static LancheFacade lancheFacade;
     private static Scanner scanner;
 
     public static void injetarDependencias() {
-        lancheRepositoryImpl = new LancheRepositoryFirebase();
-        lancheService = new LancheService();
-        lancheApplication = new LancheApplication(lancheRepositoryImpl, lancheService);
+        lancheRepositoryImpl = new LancheRepositoryImpl();
+        lancheServiceImpl = new LancheServiceImpl();
+        lancheApplication = new LancheApplication(lancheRepositoryImpl, lancheServiceImpl);
         lancheFacade = new LancheFacade(lancheApplication);
         scanner = new Scanner(System.in);
     }
@@ -37,7 +38,7 @@ public class Main {
     }
 
     public static int solicitaOpcaoMenu() {
-        System.out.println("Informe a opção escoliha: ");
+        System.out.println("Informe a opção escolha: ");
         return scanner.nextInt();
     }
 
@@ -46,6 +47,22 @@ public class Main {
         lancheFacade.buscarTodos().forEach(l -> {
             System.out.println(l);
         });
+    }
+
+    public static String solicitaEnderecoImagem() { //VERIFICAR SE QUEBRA O PRINCÍPIO DA RESPONSABILIDADE
+        String caminhoImagem = null;
+        System.out.println("Deseja adicionar/alterar uma imagem ao produto? (1 - Sim/0- N)");
+        if (scanner.nextInt() == 1) {
+            do {
+                System.out.print("Digite o caminho completo da imagem (ex: C:\\pasta\\hamburguer.jpg): ");
+                caminhoImagem = scanner.nextLine();
+
+                if (!new File(caminhoImagem).exists()) {
+                    System.out.println("Arquivo não encontrado! Digite novamente.");
+                }
+            } while (!new File(caminhoImagem).exists());
+        }
+        return caminhoImagem;
     }
 
     public static void cadastrarLanche() throws IOException {
@@ -60,19 +77,10 @@ public class Main {
         double preco = scanner.nextDouble();
         scanner.nextLine();
 
-        String caminhoImagem;
-
-        do {
-            System.out.print("Digite o caminho completo da imagem (ex: C:\\pasta\\hamburguer.jpg): ");
-            caminhoImagem = scanner.nextLine();
-
-            if (!new File(caminhoImagem).exists()) {
-                System.out.println("Arquivo não encontrado! Digite novamente.");
-            }
-        } while (!new File(caminhoImagem).exists());
+        String caminhoImagem =  solicitaEnderecoImagem(); //VERIFICAR SE QUEBRA O PRINCÍPIO DA RESPONSABILIDADE ^
 
         Lanche lanche = new Lanche(id, nome, preco, caminhoImagem);
-        lancheApplication.adicionar(lanche);
+        lancheFacade.adicionar(lanche);
     }
 
     public static void atualizarLanche() throws IOException {
@@ -87,8 +95,7 @@ public class Main {
         double preco = scanner.nextDouble();
         scanner.nextLine();
 
-        System.out.println("Novo Caminho Imagem: ");
-        String caminhoImagem = scanner.nextLine();
+        String caminhoImagem =  solicitaEnderecoImagem(); //VERIFICAR SE QUEBRA O PRINCÍPIO DA RESPONSABILIDADE ^
 
         Lanche lanche = new Lanche(0, nome, preco, caminhoImagem);
 

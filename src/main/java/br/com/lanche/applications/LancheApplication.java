@@ -1,8 +1,8 @@
 package br.com.lanche.applications;
 
 import br.com.lanche.interfaces.LancheRepository;
+import br.com.lanche.interfaces.LancheService;
 import br.com.lanche.models.Lanche;
-import br.com.lanche.services.LancheService;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,10 +26,11 @@ public class LancheApplication {
 
     public void adicionar(Lanche lanche) throws IOException {
         this.lancheRepository.adicionar(lanche);
-        this.lancheService.salvarImagem(lanche);
+        if(lanche.getCaminhoImagem() != null) {this.lancheService.salvarImagem(lanche);}
     }
 
     public void excluir(int id) throws IOException {
+        this.lancheService.excluirImagem(lancheRepository.buscarPorId(id));
         this.lancheRepository.excluir(id);
     }
 
