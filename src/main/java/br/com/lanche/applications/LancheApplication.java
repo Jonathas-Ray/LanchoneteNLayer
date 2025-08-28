@@ -34,6 +34,10 @@ public class LancheApplication {
         this.lancheRepository.excluir(id);
     }
 
+    public void excluirImagem(Lanche lanche) {
+        this.lancheService.excluirImagem(lanche);
+    }
+
     public void atualizar(int id, Lanche lanche) throws IOException {
         this.lancheRepository.atualizar(id, lanche);
     }

@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
+//VERIFICAR IMPLEMENTAÇÃO DA OPÇÃO DE EXCLUIR IMAGEM SEM EXCLUIR PRODUTO
 
 public class Main {
     private static LancheRepository lancheRepositoryImpl;
@@ -88,17 +89,55 @@ public class Main {
         int id = scanner.nextInt();
         scanner.nextLine();
 
-        System.out.println("Novo Nome do produto: ");
-        String nome = scanner.nextLine();
-
-        System.out.println("Novo Preco do produto: ");
-        double preco = scanner.nextDouble();
-        scanner.nextLine();
-
-        String caminhoImagem =  solicitaEnderecoImagem(); //VERIFICAR SE QUEBRA O PRINCÍPIO DA RESPONSABILIDADE ^
-
-        Lanche lanche = new Lanche(0, nome, preco, caminhoImagem);
-
+        Lanche lanche;
+        System.out.println("O que deseja alterar:\n" +
+                "1 - Nome\n" +
+                "2 - Preço\n" +
+                "3 - Imagem\n");
+        switch (solicitaOpcaoMenu()){
+            case 1:
+                System.out.println("Novo Nome do produto: ");
+                String nome = scanner.nextLine();
+                lanche = new Lanche(
+                        id,
+                        nome,
+                        lancheFacade.buscarPorId(id).getPreco(),
+                        lancheFacade.buscarPorId(id).getCaminhoImagem());
+                break;
+            case 2:
+                System.out.println("Novo Preco do produto: ");
+                double preco = scanner.nextDouble();
+                scanner.nextLine();
+                lanche = new Lanche(
+                        id,
+                        lancheFacade.buscarPorId(id).getNome(),
+                        preco,
+                        lancheFacade.buscarPorId(id).getCaminhoImagem());
+                break;
+            case 3:
+                System.out.println("Deseja enviar nova imagem ou excluir a existente?\n" +
+                        "1 - Enviar nova imagem\n" +
+                        "2 - Excluir imagem\n");
+                if (scanner.nextInt() == 1) {
+                    String caminhoImagem = solicitaEnderecoImagem();
+                    lanche = new Lanche(
+                            id,
+                            lancheFacade.buscarPorId(id).getNome(),
+                            lancheFacade.buscarPorId(id).getPreco(),
+                            caminhoImagem);
+                } else {
+                    lancheFacade.excluirImagem(lancheFacade.buscarPorId(id));
+                    lanche = new Lanche(
+                            id,
+                            lancheFacade.buscarPorId(id).getNome(),
+                            lancheFacade.buscarPorId(id).getPreco(),
+                            null);
+                }
+                break;
+            default:
+                System.out.println("Opção inválida.");
+                return; //Sai sem atualizar
+        }
         lancheFacade.atualizar(id, lanche);
     }
 

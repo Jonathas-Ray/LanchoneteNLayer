@@ -10,23 +10,25 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-import static java.nio.file.Files.exists;
-
 public class LancheServiceImpl implements LancheService {
-    private static final String PASTA_IMAGENS = "produto_imagens/";
 
     @Override
     public String salvarImagem(Lanche lanche) throws IOException {
-        String caminhoImagem = lanche.getCaminhoImagem();
+        Path pastaDestino = Paths.get("src", "main", "java", "br", "com", "lanche", "imagens");
 
-        Files.createDirectories(Paths.get(PASTA_IMAGENS));
+        String extensao = "";
+        int i = lanche.getCaminhoImagem().lastIndexOf('.');
+        if (i > 0 && i < lanche.getCaminhoImagem().length() - 1) {
+            extensao = lanche.getCaminhoImagem().substring(i).toLowerCase();
+        } else {
+            extensao = ".img";
+        }
 
-        String nomeArquivo = Paths.get(caminhoImagem).getFileName().toString();
+        String nomeLanche = lanche.getNome().trim().replaceAll("[^a-zA-Z0-9_-]", "_");
 
-        Path destino = Paths.get(PASTA_IMAGENS + nomeArquivo);
+        Path destino = pastaDestino.resolve(nomeLanche + extensao);
 
-        Files.copy(Paths.get(caminhoImagem), destino, StandardCopyOption.REPLACE_EXISTING);
-
+        Files.copy(Paths.get(lanche.getCaminhoImagem()), destino, StandardCopyOption.REPLACE_EXISTING);
         return destino.toString();
     }
 

@@ -36,4 +36,8 @@ public class LancheFacade {
     public double calcularTotal(Lanche lanche, int quantidade) {
         return this.lancheApplication.calcularTotal(lanche, quantidade);
     }
+
+    public void excluirImagem(Lanche lanche) {
+        this.lancheApplication.excluirImagem(lanche);
+    }
 }
