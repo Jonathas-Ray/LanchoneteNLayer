@@ -1,8 +1,8 @@
-package br.com.lanche.applications;
+package applications;
 
-import br.com.lanche.interfaces.LancheRepository;
-import br.com.lanche.interfaces.LancheService;
-import br.com.lanche.models.Lanche;
+import interfaces.LancheRepository;
+import interfaces.LancheService;
+import models.Lanche;
 
 import java.io.IOException;
 import java.util.List;

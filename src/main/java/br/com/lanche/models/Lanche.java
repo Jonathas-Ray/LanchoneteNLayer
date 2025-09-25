@@ -1,4 +1,4 @@
-package br.com.lanche.models;
+package models;
 
 public class Lanche {
     private int id;

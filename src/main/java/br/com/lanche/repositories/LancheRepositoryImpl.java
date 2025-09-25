@@ -1,7 +1,7 @@
-package br.com.lanche.repositories;
+package repositories;
 
-import br.com.lanche.interfaces.LancheRepository;
-import br.com.lanche.models.Lanche;
+import interfaces.LancheRepository;
+import models.Lanche;
 
 import java.util.ArrayList;
 import java.util.List;

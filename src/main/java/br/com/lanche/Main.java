@@ -1,12 +1,9 @@
-package br.com.lanche;
-
-import br.com.lanche.facades.LancheFacade;
-import br.com.lanche.applications.LancheApplication;
-import br.com.lanche.interfaces.LancheRepository;
-import br.com.lanche.interfaces.LancheService;
-import br.com.lanche.repositories.LancheRepositoryImpl;
-import br.com.lanche.services.LancheServiceImpl;
-import br.com.lanche.models.Lanche; // MAIN -> INTERFACE? -> FACADE -> APPLICATION -> SERVICE -> REPOSITORY -> MODELS
+import applications.LancheApplication;
+import facades.LancheFacade;
+import interfaces.*;
+import repositories.LancheRepositoryImpl;
+import services.LancheServiceImpl;
+import models.Lanche; // MAIN -> INTERFACE? -> FACADE -> APPLICATION -> SERVICE -> REPOSITORY -> MODELS
 
 import java.io.File;
 import java.io.IOException;

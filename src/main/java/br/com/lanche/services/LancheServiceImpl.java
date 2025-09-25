@@ -1,7 +1,7 @@
-package br.com.lanche.services;
+package services;
 
-import br.com.lanche.interfaces.LancheService;
-import br.com.lanche.models.Lanche;
+import interfaces.LancheService;
+import models.Lanche;
 
 import java.io.File;
 import java.io.IOException;

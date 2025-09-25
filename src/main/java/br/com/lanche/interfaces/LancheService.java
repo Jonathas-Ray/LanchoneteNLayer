@@ -1,6 +1,6 @@
-package br.com.lanche.interfaces;
+package interfaces;
 
-import br.com.lanche.models.Lanche;
+import models.Lanche;
 
 import java.io.IOException;
 

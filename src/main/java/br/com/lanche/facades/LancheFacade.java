@@ -1,7 +1,7 @@
-package br.com.lanche.facades;
+package facades;
 
-import br.com.lanche.applications.LancheApplication;
-import br.com.lanche.models.Lanche;
+import applications.LancheApplication;
+import models.Lanche;
 
 import java.io.IOException;
 import java.util.List;
